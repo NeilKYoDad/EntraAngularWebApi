@@ -1,0 +1,62 @@
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
+import {
+  AuthenticationResult,
+  EventMessage,
+  EventType,
+  InteractionStatus,
+} from '@azure/msal-browser';
+import { filter } from 'rxjs/operators';
+
+@Component({
+    selector: 'app-home',
+    templateUrl: './home.component.html',
+    styleUrls: [],
+    imports: [CommonModule]
+})
+export class HomeComponent implements OnInit {
+  loginDisplay = false;
+  isUser = false;
+  isAdmin = false;
+  username: string | null = null;
+
+  constructor(
+    private authService: MsalService,
+    private msalBroadcastService: MsalBroadcastService
+  ) {}
+
+  ngOnInit(): void {
+    this.msalBroadcastService.msalSubject$
+      .pipe(
+        filter((msg: EventMessage) => msg.eventType === EventType.LOGIN_SUCCESS)
+      )
+      .subscribe((result: EventMessage) => {
+        const payload = result.payload as AuthenticationResult;
+        this.authService.instance.setActiveAccount(payload.account);
+        this.updateRoleFlags();
+      });
+
+    this.msalBroadcastService.inProgress$
+      .pipe(
+        filter((status: InteractionStatus) => status === InteractionStatus.None)
+      )
+      .subscribe(() => {
+        this.setLoginDisplay();
+        this.updateRoleFlags();
+      });
+  }
+
+  setLoginDisplay() {
+    this.loginDisplay = this.authService.instance.getAllAccounts().length > 0;
+    const account = this.authService.instance.getActiveAccount();
+    this.username = account?.username || null;
+  }
+
+  updateRoleFlags() {
+    const account = this.authService.instance.getActiveAccount();
+    const roles = account?.idTokenClaims?.roles || [];
+    this.isUser = roles.includes('WeatherUser');
+    this.isAdmin = roles.includes('WeatherAdmin');
+  }
+}
