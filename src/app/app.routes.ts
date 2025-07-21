@@ -7,6 +7,8 @@ import { AdminComponent } from './admin/admin.component';
 import { UserGuard } from './user/user.guard';
 import { AdminGuard } from './admin/admin.guard';
 import { MsalGuard } from '@azure/msal-angular';
+import { FormioDemoComponent } from './formio-demo/formio-demo.component';
+import { BootstrapDemoFormComponent } from './bootstrap-demo-form/bootstrap-demo-form.component';
 
 export const routes: Routes = [
   {
@@ -27,6 +29,16 @@ export const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
+  },
+  {
+    path: 'formio-demo',
+    component: FormioDemoComponent,
+    canActivate: [MsalGuard],
+  },
+  {
+    path: 'bootstrap-demo-form',
+    component: BootstrapDemoFormComponent,
+    canActivate: [MsalGuard],
   },
   {
     path: 'login-failed',

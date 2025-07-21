@@ -21,6 +21,7 @@
     "@angular/router": "^19.2.7",
     "@azure/msal-angular": "^4.0.15",
     "@azure/msal-browser": "^4.15.0",
+    "@formio/angular": "^9.0.1",
     "bootstrap": "^5.3.7",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
