@@ -34,6 +34,7 @@ import {
 } from '@azure/msal-angular';
 import { msalConfig, protectedResources, PROMPT_MODE } from './auth-config';
 import { AuthService } from './auth.service';
+import { FormioAppConfigProvider } from './formio-app.config';
 
 export function loggerCallback(logLevel: LogLevel, message: string) {
   console.log(message);
@@ -77,6 +78,7 @@ export function initializeMsal(msalInstance: IPublicClientApplication) {
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    FormioAppConfigProvider,
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     importProvidersFrom(

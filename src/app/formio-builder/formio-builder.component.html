@@ -1,0 +1,9 @@
+
+<div class="container">
+  <h2>Form Builder</h2>
+  <!-- <form-builder [form]="form" project="https://uvdyehktuzwoemj.form.io" (change)="onChange($event)"></form-builder> -->
+  <form-builder [form]="form" [options]="builderOptions" project="https://uvdyehktuzwoemj.form.io" ></form-builder>
+
+  <h3 class="mt-4">Generated Form Schema:</h3>
+  <pre>{{ form | json }}</pre>
+</div>
