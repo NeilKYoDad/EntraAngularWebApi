@@ -39,6 +39,33 @@
 <div class="container">
 
 
+  <div class="mb-3">
+    <button (click)="callWebApiNoRole()" class="btn btn-success me-2 mb-2">Call API All Roles</button>
+    <button (click)="callWebApiUser()" class="btn btn-primary me-2 mb-2">Call API User</button>
+    <button (click)="callWebApiAdmin()" class="btn btn-warning me-2 mb-2">Call API Admin</button>
+    <button (click)="callWebApiUserAdmin()" class="btn btn-info mb-2">Call API User or Admin</button>
+  </div>
+
+  @if (weatherForecasts.length > 0) {
+  <h4>Forecasts:</h4>
+  <ul>
+    @for (forecast of weatherForecasts; track forecast.date) {
+    <li>
+      **Date:** {{ forecast.date | date : 'mediumDate' }} | **Temp. C:** {{ forecast.temperatureC }}°C | **Temp. F:**
+      {{
+      forecast.temperatureF }}°F | **Summary:** {{ forecast.summary }}
+    </li>
+    }
+  </ul>
+  } @if (apiCallError) {
+  <div style="color: red;">
+    <h4>Error calling API:</h4>
+    <p>{{ apiCallError }}</p>
+  </div>
+  } @if (weatherForecasts.length === 0 && !apiCallError) {
+  <p>Click a "Call Protected Weather API" button to fetch data.</p>
+  }
+
   <hr />
   <nav>
     <ul>
@@ -54,6 +81,7 @@
       <li><a routerLink="/formio-demo">Form.io Demo</a></li>
       <li><a routerLink="/bootstrap-demo-form">Bootstrap Demo Form</a></li>
       <li><a routerLink="/nhs-form">NHS Styled Form</a></li>
+      <li><a routerLink="/formio-builder">Form.io Builder (NHS fields)</a></li>
 
     </ul>
   </nav>
@@ -61,32 +89,6 @@
   <!--This is to avoid reload during acquireTokenSilent() because of hidden iframe -->
   @if (!isIframe) {
   <router-outlet></router-outlet>
-  }
-
-  <div class="mb-3">
-    <button (click)="callWebApiNoRole()" class="btn btn-success me-2 mb-2">Call API All Roles</button>
-    <button (click)="callWebApiUser()" class="btn btn-primary me-2 mb-2">Call API User</button>
-    <button (click)="callWebApiAdmin()" class="btn btn-warning me-2 mb-2">Call API Admin</button>
-    <button (click)="callWebApiUserAdmin()" class="btn btn-info mb-2">Call API User or Admin</button>
-  </div>
-
-  @if (weatherForecasts.length > 0) {
-  <h4>Forecasts:</h4>
-  <ul>
-    @for (forecast of weatherForecasts; track forecast.date) {
-    <li>
-      **Date:** {{ forecast.date | date : 'mediumDate' }} | **Temp. C:** {{ forecast.temperatureC }}°C | **Temp. F:** {{
-      forecast.temperatureF }}°F | **Summary:** {{ forecast.summary }}
-    </li>
-    }
-  </ul>
-  } @if (apiCallError) {
-  <div style="color: red;">
-    <h4>Error calling API:</h4>
-    <p>{{ apiCallError }}</p>
-  </div>
-  } @if (weatherForecasts.length === 0 && !apiCallError) {
-  <p>Click a "Call Protected Weather API" button to fetch data.</p>
   }
 
 </div>

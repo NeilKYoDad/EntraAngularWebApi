@@ -1,3 +1,4 @@
+import { FormioBuilderComponent } from './formio-builder/formio-builder.component';
 import { Routes } from '@angular/router';
 import { FailedComponent } from './failed/failed.component';
 import { HomeComponent } from './home/home.component';
@@ -48,5 +49,9 @@ export const routes: Routes = [
   {
     path: 'nhs-form',
     component: NhsstylesheetComponent
+  },
+  {
+    path: 'formio-builder',
+    component: FormioBuilderComponent
   },
 ];

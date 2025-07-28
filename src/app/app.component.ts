@@ -2,7 +2,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 // ...existing code...
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
 // Import your custom AuthService
@@ -43,7 +43,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     private authService: AuthService, // Inject your custom AuthService
-    private http: HttpClient
+    private http: HttpClient,
+    public router: Router
   ) { }
 
   ngOnInit(): void {
