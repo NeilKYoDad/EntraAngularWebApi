@@ -14,5 +14,6 @@ import { FormioModule } from '@formio/angular';
   `
 })
 export class FormioDemoComponent {
-  formUrl = 'https://examples.form.io/example'; // Replace with your Form.io form URL
+  //formUrl = 'https://examples.form.io/example'; // Replace with your Form.io form URL
+  formUrl = 'https://iiddhmhnhlpeonl.form.io/basictestform'; // Replace with your Form.io form URL  
 }

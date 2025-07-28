@@ -9,6 +9,7 @@ import { AdminGuard } from './admin/admin.guard';
 import { MsalGuard } from '@azure/msal-angular';
 import { FormioDemoComponent } from './formio-demo/formio-demo.component';
 import { BootstrapDemoFormComponent } from './bootstrap-demo-form/bootstrap-demo-form.component';
+import { NhsstylesheetComponent } from './nhsstylesheet/nhsstylesheet.component';
 
 export const routes: Routes = [
   {
@@ -43,5 +44,9 @@ export const routes: Routes = [
   {
     path: 'login-failed',
     component: FailedComponent,
+  },
+  {
+    path: 'nhs-form',
+    component: NhsstylesheetComponent
   },
 ];
