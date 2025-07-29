@@ -11,70 +11,101 @@ import { FormioModule } from '@formio/angular';
     styleUrls: ['./formio-builder.component.css']
 })
 export class FormioBuilderComponent {
-    public form: any = { components: [] };
-    public builderOptions: any; // Declare the options property
+  public form: any = { title: '', components: [] };
+  public builderOptions: any;
 
-
-    ngOnInit(): void {
-        this.builderOptions = {
-            builder: {
-                // Disable default groups if you want only your custom ones
-                basic: false,
-                advanced: false,
-                layout: false,
-                data: false,
-                premium: false,
-                // Add a custom group for your predefined fields
-                custom: {
-                    title: 'My Predefined Fields', // Title of your custom group in the builder
-                    default: true, // Make this the default active tab in the builder
-                    weight: 0, // Control the order of this group in the builder sidebar
-                    components: {
-                        // Define the components you want to allow
-                        // You can use a boolean 'true' to include a standard component type
-                        textfield: false,
-                        textarea: false,
-                        email: false,
-                        phoneNumber: false,
-                        checkbox: false,
-                        select: false, // Dropdown select
-                        radio: false,  // Radio buttons
-
-                        // You can also define custom components here with their full schema
-                        // For example, a pre-configured text field:
-                        nominatorField: {
-                            title: 'Nominator',
-                            key: 'nominator',
-                            schema: {
-                                label: 'Nominator',
-                                type: 'textfield',
-                                key: 'nominator',
-                                input: true,
-                                placeholder: 'Enter custom text here',
-                                description: 'This is a nominator.'
-                            }
-                        },
-                        denominatorField: {
-                            title: 'Denominator',
-                            key: 'denominator',
-                            icon: 'check-square',
-                            schema: {
-                                label: 'I accept the terms and conditions',
-                                type: 'checkbox',
-                                key: 'denominator',
-                                input: true,
-                                defaultValue: false
-                            }
-                        }
-                    }
-                }
+  ngOnInit(): void {
+    this.builderOptions = {
+      builder: {
+        basic: false,
+        advanced: false,
+        layout: false,
+        data: false,
+        premium: false,
+        custom: {
+          title: 'Pre-Defined Fields',
+          default: true,
+          weight: 0,
+          components: {
+            nominator: {
+              title: 'Nominator',
+              key: 'nominator',
+              icon: 'terminal',
+              schema: {
+                label: 'Nominator',
+                type: 'textfield',
+                key: 'nominator',
+                input: true
+              }
+            },
+            lastName: {
+              title: 'Last Name',
+              key: 'lastName',
+              icon: 'terminal',
+              schema: {
+                label: 'Last Name',
+                type: 'textfield',
+                key: 'lastName',
+                input: true
+              }
+            },
+            email: {
+              title: 'Email',
+              key: 'email',
+              icon: 'at',
+              schema: {
+                label: 'Email',
+                type: 'email',
+                key: 'email',
+                input: true
+              }
+            },
+            mobilePhone: {
+              title: 'Mobile Phone',
+              key: 'mobilePhone',
+              icon: 'phone-square',
+              schema: {
+                label: 'Mobile Phone',
+                type: 'phoneNumber',
+                key: 'mobilePhone',
+                input: true
+              }
             }
-        };
-    }
+          }
+        }
+      }
+    };
+  }
 
-    /*
-    onChange(event: any) {
-      console.log('Form changed:', event);
-      this.form = event.form; // Update the form object with the new schema
-    }*/
+  onChange(event: any) {
+  }
+
+  async saveForm() {
+    const projectUrl = 'https://uvdyehktuzwoemj.form.io';
+    const name = this.form.title ? this.form.title.toLowerCase().replace(/\s+/g, '-') : 'custom-form';
+    const payload = {
+      title: this.form.title,
+      name,
+      path: name,
+      type: 'form',
+      display: 'form',
+      components: this.form.components
+    };
+    const url = `${projectUrl}/form`;
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (res.ok) {
+        alert('Form saved to Form.io!');
+      } else {
+        const err = await res.text();
+        alert('Error saving form: ' + err);
+      }
+    } catch (e: any) {
+      alert('Error saving form: ' + e.message);
+    }
+  }
 }
