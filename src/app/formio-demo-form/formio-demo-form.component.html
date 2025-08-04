@@ -1,0 +1,38 @@
+<div class="row">
+  <div class="col-md-8">
+    <h5>Previous Submissions</h5>
+    <table class="table table-bordered table-sm mb-3">
+      <thead class="table-light">
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Message</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let entry of entries; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ entry.name }}</td>
+          <td>{{ entry.email }}</td>
+          <td>{{ entry.message }}</td>
+          <td>
+            <button class="btn btn-sm btn-outline-primary me-1" (click)="loadEntry(i)">View</button>
+            <button class="btn btn-sm btn-outline-warning me-1" (click)="editEntry(i)">Edit</button>
+            <button class="btn btn-sm btn-outline-secondary me-1" (click)="readonlyEntry(i)">Readonly</button>
+          </td>
+        </tr>
+        <tr *ngIf="entries.length === 0">
+          <td colspan="5" class="text-muted text-center">No submissions yet.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-8">
+    <formio #formioComp [form]="form" (submit)="onSubmit($event)" [options]="{ readOnly: readonly }"></formio>
+    <button class="btn btn-success mt-2" (click)="createNew()" *ngIf="readonly">Create New</button>
+  </div>
+</div>

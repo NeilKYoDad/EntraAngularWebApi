@@ -11,6 +11,7 @@ import { MsalGuard } from '@azure/msal-angular';
 import { FormioDemoComponent } from './formio-demo/formio-demo.component';
 import { BootstrapDemoFormComponent } from './bootstrap-demo-form/bootstrap-demo-form.component';
 import { NhsstylesheetComponent } from './nhsstylesheet/nhsstylesheet.component';
+import { FormioDemoFormComponent } from './formio-demo-form/formio-demo-form.component';
 
 export const routes: Routes = [
   {
@@ -40,6 +41,11 @@ export const routes: Routes = [
   {
     path: 'bootstrap-demo-form',
     component: BootstrapDemoFormComponent,
+    canActivate: [MsalGuard],
+  },
+  {
+    path: 'formio-demo-form',
+    component: FormioDemoFormComponent,
     canActivate: [MsalGuard],
   },
   {

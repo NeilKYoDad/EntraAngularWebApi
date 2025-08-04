@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 // ...existing code...
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-
 // Import your custom AuthService
 import { AuthService } from './auth.service';
 import { protectedResources } from './auth-config';
@@ -46,6 +45,11 @@ export class AppComponent implements OnInit, OnDestroy {
     private http: HttpClient,
     public router: Router
   ) { }
+
+  showNotImplemented(event: Event) {
+    alert('Not implemented');
+    event.preventDefault();
+  }
 
   ngOnInit(): void {
     console.log('--- AppComponent ngOnInit called ---');
