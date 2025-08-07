@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Days Form - Form.io</title>
+  <script src="https://cdn.form.io/formiojs/formio.full.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.form.io/formiojs/formio.full.min.css">
+  <script src="src/app/form-components/CheckMatrix.js"></script>
+  <script>
+    // Register CheckMatrix with Formio if available
+    if (window.Formio && window.CheckMatrix) {
+      window.Formio.use({
+        components: {
+          checkmatrix: window.CheckMatrix
+        }
+      });
+    }
+  </script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+    }
+    #formio {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Days Form</h2>
+  <div id="formio"></div>
+
+  <script>
+    const formDefinition = {
+      components: [
+        {
+          type: "checkmatrix",
+          key: "myCheckMatrix",
+          label: "Check Matrix",
+          numRows: 3,
+          numCols: 4
+        },
+        {
+          type: "columns",
+          columns: [
+            {
+              width: 1,
+              components: [
+                {
+                  type: "html",
+                  tag: "span",
+                  content: "<strong>Days:</strong>"
+                }
+              ]
+            },
+            {
+              width: 6,
+              components: [
+                {
+                  type: "html",
+                  tag: "table",
+                  content: "<tr><td>3</td><td>5</td><td>2</td><td>4</td><td>6</td><td>1</td></tr>"
+                }
+              ]
+            },
+            {
+              width: 2,
+              components: [
+                {
+                  type: "textfield",
+                  key: "newDay",
+                  label: "",
+                  placeholder: "Enter number",
+                  input: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          type: "button",
+          action: "submit",
+          label: "Submit",
+          theme: "primary",
+          input: true
+        }
+      ]
+    };
+
+    Formio.createForm(document.getElementById('formio'), formDefinition).then(form => {
+      form.on('submit', (submission) => {
+        alert('Submitted value: ' + JSON.stringify(submission.data));
+        console.log('Form submission:', submission);
+      });
+    });
+  </script>
+</body>
+</html>
+

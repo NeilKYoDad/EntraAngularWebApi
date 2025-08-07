@@ -41,3 +41,4 @@ Update environment.dev.ts with your Azure app details
 - The default interaction type for the sample is redirects. The sample can be configured to use redirects by changing the `interactionType` in `main.ts` to `InteractionType.Popup`.
 
 
+weather-user@neilk1976hotmail.onmicrosoft.com

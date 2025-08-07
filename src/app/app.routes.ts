@@ -12,8 +12,13 @@ import { FormioDemoComponent } from './formio-demo/formio-demo.component';
 import { BootstrapDemoFormComponent } from './bootstrap-demo-form/bootstrap-demo-form.component';
 import { NhsstylesheetComponent } from './nhsstylesheet/nhsstylesheet.component';
 import { FormioDemoFormComponent } from './formio-demo-form/formio-demo-form.component';
+import { DaysHistoryFormComponent } from './days-history-form/days-history-form.component';
 
 export const routes: Routes = [
+  {
+    path: 'days-history-form',
+    component: DaysHistoryFormComponent
+  },
   {
     path: 'profile',
     component: ProfileComponent,

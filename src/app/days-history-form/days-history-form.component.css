@@ -1,0 +1,14 @@
+.container {
+  padding-top: 2rem;
+}
+.card {
+  border-radius: 0.5rem;
+}
+.card-body {
+  padding: 2rem;
+}
+pre {
+  background: #f8f9fa;
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+}
