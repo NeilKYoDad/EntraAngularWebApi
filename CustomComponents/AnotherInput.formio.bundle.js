@@ -1,8 +1,7 @@
 // Paste this into your Form.io Portal → Project Settings → Custom Components
 
-(function() {
- if (!window.Formio || !window.Formio.Components) return;
-
+(function(Formio) {
+    
   // Grab base Input component
   var Components = Formio.Components;
   var Input = Components.components.input;
@@ -10,22 +9,26 @@
   // Define your custom component
   class AnotherInput extends Input {
     // Add a simple editForm so appendText can be set in the Form Builder
-    static editForm(...args) {
-      // Get the default edit form definition from the base Input component
-      const editForm = super.editForm(...args);
-
-      // Use Formio's utility to add a component to the 'Display' tab.
-      // This is the safest way to extend the form.
-      Formio.Utils.getComponent(editForm.components, 'display').components.push({
-        type: 'textfield',
-        key: 'appendText',
-        label: 'Append Text',
-        tooltip: 'This text will be appended to the input.',
-        input: true,
-        weight: 20 // Position it after the label
-      });
-
-      return editForm;
+    static editForm() {
+      return [
+        {
+          key: 'display',
+          components: [
+            {
+              type: 'textfield',
+              key: 'label',
+              label: 'Label',
+              input: true
+            },
+            {
+              type: 'textfield',
+              key: 'appendText',
+              label: 'Append Text',
+              input: true
+            }
+          ]
+        }
+      ];
     }
     static schema(...extend) {
       return Input.schema({
@@ -154,6 +157,6 @@
   }
 
   // Register it
-  Components.addComponent('anotherinput', AnotherInput);
+  Components.addComponent('inputwithhistory', AnotherInput);
 
 })(window.Formio);

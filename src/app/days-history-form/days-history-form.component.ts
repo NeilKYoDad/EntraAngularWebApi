@@ -12,19 +12,10 @@ import { Formio, FormioModule } from '@formio/angular';
 export class DaysHistoryFormComponent {
   // Hardcoded previous submission object
   previousSubmission = {
-    name: 'Graham',
-    fancyInput: 'fancy preset',
-    day: 10,
-    history: [3, 5, 2, 4, 6, 1],
-    anotherinput: {
-      value: 'User inputs2',
-      appendText: 'Loaded from previous submission',
-      history: ['1updated', '5', '7']
-    },
-    days: {
-      value: 'User days',
-      appendText: 'datys Loaded from previous submission',
-      history: ['days', '5', '7']
+    name: '',
+    daysOff: {
+      value: '',
+      history: ['10', '15', '17', '18']
     }
   };
 
@@ -32,32 +23,15 @@ export class DaysHistoryFormComponent {
   formioData = { ...this.previousSubmission };
   form = {
     components: [
-    //   {
-    //     label: 'Days',
-    //     key: 'days',
-    //     type: 'fancyinput',
-    //     numCols: 6
-    //   },
       {
-        type: "anotherinput",
-        key: "anotherinput",
-        label: "Another Input",
-        appendText: 'yo',
+        type: "inputwithhistory",
+        key: "daysOff",
+        label: "Days Off",
+        appendText: 'Days',
+        numHistoryItems: 3,        
         history: ['1', '5', '7'],
         // input: true,
-        // inputType: "text",
-        validate: {
-          required: true
-        }
-      },
-      {
-        type: "anotherinput",
-        key: "days",
-        label: "DAys",
-        appendText: 'yo',
-        history: ['1', '5', '7'],
-        // input: true,
-        // inputType: "text",
+        inputType: "number",
         validate: {
           required: true
         }
@@ -78,15 +52,21 @@ export class DaysHistoryFormComponent {
     ]
   };
 
-  submissions: any[] = [];
+  submission: any = {};
+  private formioInstance: any;
 
   onFormReady(formInstance: any) {
     console.log('Form is ready!', formInstance);
+    this.formioInstance = formInstance;
     // Set the submission so that history is under days.history
     //formInstance.formio.setSubmission({ data: { history: this.previousSubmission.history, newDay: 10, name: 'Bob' } });
   }
 
   onFormioSubmit(event: any) {
-    this.submissions.unshift({ ...event.data, submittedAt: new Date() });
+    this.submission = { ...event.data, submittedAt: new Date() };
+    if (this.formioInstance) {
+      this.formioInstance.formio.emit('submitDone');
+      this.formioInstance.formio.setSubmission({ data: {} });
+    }
   }
 }

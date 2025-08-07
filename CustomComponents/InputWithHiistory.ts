@@ -2,7 +2,7 @@
 import { Components } from 'formiojs';
 const Input = (Components as any).components.input;
 
-export default class AnotherInput extends Input {
+export default class InputWithHistory extends Input {
       static editForm(...args) {
     // Get the default edit form definition from the base Input component
     const editForm = super.editForm(...args);
@@ -18,6 +18,15 @@ export default class AnotherInput extends Input {
         input: true,
         weight: 20 // Position it after the label
       });
+
+      Formio.Utils.getComponent(editForm.components, 'display').components.push({
+        type: 'number',
+        key: 'numHistoryItems',
+        label: 'Number of History Items',
+        tooltip: 'The number of historical values to display.',
+        input: true,
+        weight: 30
+      });      
     }
     return editForm;
   }
@@ -38,6 +47,7 @@ export default class AnotherInput extends Input {
             label: 'Another Input',
             key: 'anotherinput',
             appendText: '',
+            numHistoryItems: 0,
             history: []
         });
     }
@@ -115,30 +125,33 @@ export default class AnotherInput extends Input {
     render(content) {
         const input = this.inputInfo;
 
-        return `
-    <div class="form-group formio-component-${this.component.type}">
-      <label for="${input.attr.id}">${this.component.label}</label>
-      <div class="input-group">
-        <input 
-          type="${input.attr.type}" 
-          class="${input.attr.class}" 
-          id="${input.attr.id}" 
-          name="${input.attr.name}" 
-          ref="input"
-        />
-        <div class="input-group-append">
-          <span class="input-group-text" ref="appendText">${this.component.appendText || ''}</span>
-        </div>
-  
-        <div class="history-list" style="margin-top: 12px;">
-          <div ref="history" class="history-item">${this.component.history[0] || ''}</div>
-          <div ref="history" class="history-item">${this.component.history[1] || ''}</div>
-          <div ref="history" class="history-item">${this.component.history[2] || ''}</div>
-        </div>
+        let historyItemsHtml = '';
+        const numHistory = this.component.numHistoryItems || 0;
 
-      </div>
-    </div>
-  `;
+        for (let i = 0; i < numHistory; i++) {
+            const historyValue = this.component.history?.[i] || '';
+            // Add flex: 1 to make items equal width and text-align to center the content
+            historyItemsHtml += `<div ref="history" class="history-item" style="flex: 1; text-align: center; border: 1px solid #eee; padding: 4px;">${historyValue}</div>`;
+        }
+
+        return `
+            <div class="form-group formio-component-${this.component.type}">
+                <label for="${input.attr.id}">${this.component.label}</label>
+
+                <div style="display: flex; align-items: stretch; gap: 5px;">
+                    <div class="history-list" style="display: flex; flex: 1; gap: 5px;">
+                        ${historyItemsHtml}
+                    </div>
+
+                    <div class="input-group" style="flex: 1;">
+                        <input type="${input.attr.type}" class="form-control" id="${input.attr.id}" name="${input.attr.name}" ref="input" />
+                        <div class="input-group-append">
+                            <span class="input-group-text" ref="appendText">${this.component.appendText || ''}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
     }
 
     /**
@@ -184,15 +197,16 @@ export default class AnotherInput extends Input {
     attach(element) {
         this.loadRefs(element, {
             input: 'single',
-            appendText: 'single',
-            history: 'multiple'
+            // appendText: 'single',
+            // numHistoryItem: 'single',
+            history: 'multiple',
         });
 
         // Set appended text from submission or component config
-        const dynamicText = this.data?.appendText || this.component.appendText;
-        if (this.refs.appendText) {
-            this.refs.appendText.textContent = dynamicText;
-        }
+        // const dynamicText = this.data?.appendText || this.component.appendText;
+        // if (this.refs.appendText) {
+        //     this.refs.appendText.textContent = dynamicText;
+        // }
 
           // Populate history items from component config
         if (Array.isArray(this.component.history) && this.refs.history?.length) {
@@ -285,29 +299,42 @@ export default class AnotherInput extends Input {
      * @return - Boolean indicating if the setValue changed the value or not.
      */
     setValue(value, flags = {}) {
-        // Handle null or primitive values gracefully
-        const inputValue = value && typeof value === 'object' ? value.value : value;
-        const appendText = value && typeof value === 'object' ? value.appendText : null;
-        const history = value && typeof value === 'object' ? value.history : [];
-
-        // Set the input value
-        const result = super.setValue(inputValue, flags);
-
-        // Update the appendText display if it's present
-        if (appendText && this.refs.appendText) {
-            this.refs.appendText.textContent = appendText;
+        // Determine the full object value for our component.
+        let objectValue;
+        if (value && typeof value === 'object' && value.hasOwnProperty('value')) {
+            // It's already the object we expect.
+            objectValue = value;
+        } else {
+            // It's a primitive (or null/undefined). This is the new 'value' property.
+            // Preserve other properties from the existing dataValue.
+            const currentObject = (this.dataValue && typeof this.dataValue === 'object') ? this.dataValue : {};
+            objectValue = {
+                ...currentObject,
+                value: value
+            };
         }
 
-        // Update history display
-        if (Array.isArray(history) && this.refs.history?.length) {
-            this.refs.history.forEach((el, index) => {
-            el.textContent = history[index] || '';
-            });
-        }       
+        // The value for the base <input> is just one property of our object.
+        const inputValue = objectValue.value;
 
-        return result;
+        // Call the parent setValue. This updates the DOM input and sets this.dataValue = inputValue.
+        const changed = super.setValue(inputValue, flags);
 
-        //return super.setValue(value ? value.value : value, flags);
+        // **Crucially, reset this.dataValue to be our full object.**
+        this.dataValue = objectValue;
+
+        // Update the view for our custom elements.
+        // if (this.refs.appendText) {
+        //     this.refs.appendText.textContent = this.dataValue.appendText || this.component.appendText || '';
+        // }
+        // if (this.refs.history) {
+        //     const history = this.dataValue.history || this.component.history || [];
+        //     this.refs.history.forEach((el, index) => {
+        //         el.textContent = history[index] || '';
+        //     });
+        // }
+        
+        return changed;
     }
 
     /**
