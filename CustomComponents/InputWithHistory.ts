@@ -63,12 +63,12 @@ export default class InputWithHistory extends Input {
      */
     static get builderInfo() {
         return {
-            title: 'My Another Input',
+            title: 'Input With History',
             icon: 'terminal',
-            group: 'basic',
+            group: 'MFT',
             documentation: '/userguide/#textfield',
             weight: 0,
-            schema: MyComponent.schema()
+            schema: InputWithHistory.schema()
         };
     }
 
@@ -102,8 +102,7 @@ export default class InputWithHistory extends Input {
      *           input element of a component.
      */
     get inputInfo() {
-        const info = super.inputInfo;
-        return info;
+        return super.inputInfo;
     }
 
     /**

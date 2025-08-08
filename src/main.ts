@@ -11,7 +11,7 @@ import { appConfig } from './app/app.config';
 import { AppComponent } from './app/app.component';
 import { enableProdMode } from '@angular/core';
 import { environment } from './environments/environment';
-import InputWithHistory from 'CustomComponents/InputWithHiistory';
+import InputWithHistory from 'CustomComponents/InputWithHistory';
 
 if (environment.production) {
   enableProdMode();

@@ -1,0 +1,22 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "./",
+    "outDir": "./dist",
+    "module": "ESNext",
+    "target": "ES2017",
+    "moduleResolution": "Node",
+    "strict": false,
+    "declaration": false,
+    "skipLibCheck": true,
+    "types": []
+  },
+  "include": [
+    "./InputWithHistory.ts",
+    "./InputWithHistory.formio.entry.ts"
+  ],
+  "exclude": [
+    "../src",
+    "../node_modules"
+  ]
+}
