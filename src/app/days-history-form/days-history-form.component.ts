@@ -27,7 +27,7 @@ export class DaysHistoryFormComponent {
         type: "inputwithhistory",
         key: "daysOff",
         label: "Days Off",
-        appendText: 'Days',
+        suffix: 'MyDays',
         numHistoryItems: 3,        
         history: ['1', '5', '7'],
         // input: true,

@@ -12,8 +12,8 @@ export default class InputWithHistory extends Input {
     if (Formio.Utils.getComponent(editForm.components, 'display')) {
       Formio.Utils.getComponent(editForm.components, 'display').components.push({
         type: 'textfield',
-        key: 'inputwithhistory',
-        label: 'Input With History',
+        key: 'suffix',
+        label: 'Suffix',
         tooltip: 'This text will be appended to the input.',
         input: true,
         weight: 20 // Position it after the label
@@ -46,7 +46,7 @@ export default class InputWithHistory extends Input {
             type: 'inputwithhistory',
             label: 'Input With History',
             key: 'inputwithhistory',
-            appendText: '',
+            suffix: '',
             numHistoryItems: 0,
             history: []
         });
@@ -145,7 +145,7 @@ export default class InputWithHistory extends Input {
                     <div class="input-group" style="flex: 1;">
                         <input type="${input.attr.type}" class="form-control" id="${input.attr.id}" name="${input.attr.name}" ref="input" />
                         <div class="input-group-append">
-                            <span class="input-group-text" ref="appendText">${this.component.appendText || ''}</span>
+                            <span class="input-group-text" ref="suffix">${this.component.suffix || ''}</span>
                         </div>
                     </div>
                 </div>
@@ -196,15 +196,15 @@ export default class InputWithHistory extends Input {
     attach(element) {
         this.loadRefs(element, {
             input: 'single',
-            // appendText: 'single',
+            // suffix: 'single',
             // numHistoryItem: 'single',
             history: 'multiple',
         });
 
         // Set appended text from submission or component config
-        // const dynamicText = this.data?.appendText || this.component.appendText;
-        // if (this.refs.appendText) {
-        //     this.refs.appendText.textContent = dynamicText;
+        // const dynamicText = this.data?.suffix || this.component.suffix;
+        // if (this.refs.suffix) {
+        //     this.refs.suffix.textContent = dynamicText;
         // }
 
           // Populate history items from component config
@@ -323,8 +323,8 @@ export default class InputWithHistory extends Input {
         this.dataValue = objectValue;
 
         // Update the view for our custom elements.
-        // if (this.refs.appendText) {
-        //     this.refs.appendText.textContent = this.dataValue.appendText || this.component.appendText || '';
+        // if (this.refs.suffix) {
+        //     this.refs.suffix.textContent = this.dataValue.suffix || this.component.suffix || '';
         // }
         // if (this.refs.history) {
         //     const history = this.dataValue.history || this.component.history || [];

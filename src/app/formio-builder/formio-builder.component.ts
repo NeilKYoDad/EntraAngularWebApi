@@ -70,6 +70,22 @@ export class FormioBuilderComponent {
                 key: 'mobilePhone',
                 input: true
               }
+            },
+            // Added custom component
+            inputWithHistory: {
+              title: 'Input With History',
+              key: 'inputWithHistory',
+              icon: 'history',
+              schema: {
+                label: 'Input With History',
+                type: 'inputwithhistory',
+                key: 'inputWithHistory',
+                input: true,
+                inputType: 'number',
+                suffix: 'MySuffix',
+                numHistoryItems: 3,
+                history: ['1', '12', '7']
+              }
             }
           }
         }
