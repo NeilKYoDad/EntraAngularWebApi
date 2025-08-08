@@ -12,8 +12,8 @@ export default class InputWithHistory extends Input {
     if (Formio.Utils.getComponent(editForm.components, 'display')) {
       Formio.Utils.getComponent(editForm.components, 'display').components.push({
         type: 'textfield',
-        key: 'appendText',
-        label: 'Append Text',
+        key: 'inputwithhistory',
+        label: 'Input With History',
         tooltip: 'This text will be appended to the input.',
         input: true,
         weight: 20 // Position it after the label
@@ -43,9 +43,9 @@ export default class InputWithHistory extends Input {
      */
     static schema(...extend) {
         return Input.schema({
-            type: 'anotherinput',
-            label: 'Another Input',
-            key: 'anotherinput',
+            type: 'inputwithhistory',
+            label: 'Input With History',
+            key: 'inputwithhistory',
             appendText: '',
             numHistoryItems: 0,
             history: []
